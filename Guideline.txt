@@ -1,0 +1,28 @@
+Rules of Connect 4
+    Two player game (White and Black Pieces)
+    42 pieces in total
+    First to 4 in a row in any direction wins (Vertical, horizontal, diagonal)
+    Pieces fall due to gravity
+    Players alternate p[laying pieces
+    BOARD [7 wide x 6 height]
+
+Plan
+    Board:
+        Create the board (Maybe Pygame or Turtle (Turtle being the easier option))
+        Create Holes for the pieces
+        Allow pieces to stop at the right areas
+    Pieces:
+        Create Checker pieces (Black & White Pieces)
+        Piece Gravity
+        Keep their location until the game restarts
+        Can't be moved or influenced after they're placed
+    Player:
+        Create two players
+        Update & Store moves (maybe in an array)
+        Create player_move class to allow placement
+        Deny the abilty for someone to place if its not their turn
+        Alternate turns
+    End game:
+        Player gets 4 pieces in a row in any direction
+        All slots are filled
+        A player quits/ff
