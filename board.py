@@ -1,57 +1,58 @@
 import pygame
 
 pygame.init()
-ORIGIN = (0, 0)
 SCREEN_SIZE = SCREEN_HEIGHT, SCREEN_WIDTH = 640, 480
 flags = pygame.SCALED | pygame.RESIZABLE
 screen = pygame.display.set_mode(SCREEN_SIZE, flags=flags)
-BACKGROUND_IMG = "Connect4Board.png"
 pygame.display.set_caption("Connect 4!")
 BLACK = (255, 255, 255)
 
 
 class Background(pygame.sprite.Sprite):
-    def __init__(self, image, location):
+    def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load(image)
-        self.rect = self.image.get_rect()
-        self.rect.topleft = location
+        self.ORIGIN = (0, 0)
+        self.BACKGROUND_IMG = "Connect4Board.png"
+        self.BACKGROUND_IMG = pygame.image.load(self.BACKGROUND_IMG)
+        self.background_rect = self.BACKGROUND_IMG.get_rect()
+        self.background_rect.topleft = self.ORIGIN
 
 
 class Pieces(pygame.sprite.Sprite):
-    def __init__(self, image1, image2, location):
+    def __init__(self, location):
         pygame.sprite.Sprite.__init__(self)
-        self.image1 = pygame.image.load(image1)
-        self.image2 = pygame.image.load(image2)
-        self.rect1 = self.image1.get_rect()
-        self.rect2 = self.image2.get_rect()
+        self.piece1 = "red.png"
+        self.piece2 = "yellow.png"
+        self.piece_dimensions = self.piece_x, self.piece_y = 70, 70
+        self.piece1 = pygame.image.load(self.piece1)
+        self.piece1 = pygame.transform.smoothscale(self.piece1, self.piece_dimensions)
+        self.piece2 = pygame.image.load(self.piece2)
+        self.piece2 = pygame.transform.smoothscale(self.piece2, self.piece_dimensions)
+        self.rect1 = self.piece1.get_rect()
+        self.rect2 = self.piece2.get_rect()
         self.location = location
-        self.turn_tracker = ""
-
-    def choose_piece(self, turn_tracker):
-        self.turn_tracker = turn_tracker
-        if self.turn_tracker % 2 == 0:
-            return True
-        else:
-            return False
 
     def place_piece(self, player):
         if player:
-            self.rect1.topleft = self.location
+            self.rect1.center = self.location
         else:
-            self.rect2.topleft = self.location
+            self.rect2.center = self.location
 
 
 clock = pygame.time.Clock()
 running = True
-pieces = Pieces()
+# (50, 41) are the perfect coords to cover the first hole
+pieces = Pieces((50, 41))
+player = True
 while running:
     clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-    background = Background(BACKGROUND_IMG, ORIGIN)
+    background = Background()
     screen.fill(BLACK)
-    screen.blit(background.image, background.rect)
+    screen.blit(background.BACKGROUND_IMG, background.background_rect)
+    pieces.place_piece(player)
+    screen.blit(pieces.piece1, pieces.rect1)
     pygame.display.flip()
