@@ -1,14 +1,11 @@
 import pygame
 
-pygame.init()
-SCREEN_SIZE = SCREEN_HEIGHT, SCREEN_WIDTH = 640, 480
-flags = pygame.SCALED | pygame.RESIZABLE
-screen = pygame.display.set_mode(SCREEN_SIZE, flags=flags)
-pygame.display.set_caption("Connect 4!")
-BLACK = (255, 255, 255)
-
 
 class Background(pygame.sprite.Sprite):
+    """
+    Class that sets up the background image
+    """
+
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.ORIGIN = (0, 0)
@@ -19,6 +16,9 @@ class Background(pygame.sprite.Sprite):
 
 
 class Pieces(pygame.sprite.Sprite):
+    """
+    Class that sets up and initializes the player pieces
+    """
     def __init__(self, location):
         pygame.sprite.Sprite.__init__(self)
         self.piece1 = "red.png"
@@ -33,26 +33,12 @@ class Pieces(pygame.sprite.Sprite):
         self.location = location
 
     def place_piece(self, player):
+        """
+        Takes player bool flag, determine which player symbol to use
+        :param player: Bool
+        :return: piece location for each player
+        """
         if player:
             self.rect1.center = self.location
         else:
             self.rect2.center = self.location
-
-
-clock = pygame.time.Clock()
-running = True
-# (50, 41) are the perfect coords to cover the first hole
-pieces = Pieces((50, 41))
-player = True
-while running:
-    clock.tick(60)
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-            pygame.quit()
-    background = Background()
-    screen.fill(BLACK)
-    screen.blit(background.BACKGROUND_IMG, background.background_rect)
-    pieces.place_piece(player)
-    screen.blit(pieces.piece1, pieces.rect1)
-    pygame.display.flip()
