@@ -2,79 +2,65 @@ import pygame
 import board
 import checker
 import player
+import mouse
 
+# Creating the board piece tracking array
 tracker = [[0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0]]
-# The first list is "y" the second list is the "x"
-player_pieces = {"player_1": 1, "player_2": 2}
-player_1_turn = True
-player_2_turn = False
+piece_position_list = [[(50, 41), (140, 41), (230, 41), (320, 41), (410, 41), (500, 41), (590, 41)],
+                       [(50, 121), (140, 121), (230, 121), (320, 121), (410, 121), (500, 121), (590, 121)],
+                       [(50, 201), (140, 201), (230, 201), (320, 201), (410, 201), (500, 201), (590, 201)],
+                       [(50, 281), (140, 281), (230, 281), (320, 281), (410, 281), (500, 281), (590, 281)],
+                       [(50, 361), (140, 361), (230, 361), (320, 361), (410, 361), (500, 361), (590, 361)],
+                       [(50, 441), (140, 441), (230, 441), (320, 441), (410, 441), (500, 441), (590, 441)]]
+print(piece_position_list)
+# player variables
+player_pieces = {True: 1, False: 2}
+player_flag = True
 running = True
 turn_tracker = 0
-clock = pygame.time.Clock()
-pieces = board.Pieces((50, 41))
-background = board.Background()
-players = player.Player()
+piece_location = 0
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
+# Initializing classes
+pieces = board.Pieces(tracker, piece_position_list)
+background = board.Background()
+players = player.Player()
+mouse = mouse.Mouse()
+checker = checker.Checker(board, player, player_pieces)
 # Initializes pygame
 pygame.init()
 SCREEN_SIZE = SCREEN_HEIGHT, SCREEN_WIDTH = 640, 480
+clock = pygame.time.Clock()
 flags = pygame.SCALED | pygame.RESIZABLE
 screen = pygame.display.set_mode(SCREEN_SIZE, flags=flags)
 pygame.display.set_caption("Connect 4!")
 
 
-def draw_images():
-    pass
+def get_position():
+    x_loc = mouse.get_mouse_location()
+    return x_loc
 
 
 while running:
     clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
             pygame.quit()
-    # if player_1_turn:
-    #     tracker = players.pick_location(tracker, player_pieces, player_1_turn, player_2_turn)
-    #     turn_tracker += 1
-    #     player_1_turn, player_2_turn = players.switch_players(turn_tracker)
-    #     print(tracker)
-    # elif player_2_turn:
-    #     tracker = players.pick_location(tracker, player_pieces, player_1_turn, player_2_turn)
-    #     turn_tracker += 1
-    #     player_1_turn, player_2_turn = players.switch_players(turn_tracker)
-    #     print(tracker)
+            running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Checks for the players input, this will grab where the player places their piece
+            if pieces.piece_gravity(get_position()) != -1:
+                pieces.place_piece(pieces.piece_gravity(get_position()), player_flag)
+    # This sets the background to white and then adds the connect4.png on top
     screen.fill(WHITE)
     screen.blit(background.BACKGROUND_IMG, background.background_rect)
-    # There is probably a better way to choose player pieces than this function
-    pieces.place_piece(player_1_turn)
+    # Player turn
     screen.blit(pieces.piece1, pieces.rect1)
-    # TESTING MOUSE REGIONS
-    # MOUSE REGION 1
-    pygame.draw.line(screen, BLACK, (95, 0), (95, 85))
-    pygame.draw.line(screen, BLACK, (0, 85), (95, 85))
-    # MOUSE REGION 2
-    pygame.draw.line(screen, BLACK, (185, 0), (185, 85))
-    pygame.draw.line(screen, BLACK, (95, 85), (185, 85))
-    # MOUSE REGION 3
-    pygame.draw.line(screen, BLACK, (275, 0), (275, 85))
-    pygame.draw.line(screen, BLACK, (185, 85), (275, 85))
-    # MOUSE REGION 4
-    pygame.draw.line(screen, BLACK, (365, 0), (365, 85))
-    pygame.draw.line(screen, BLACK, (275, 85), (365, 85))
-    # MOUSE REGION 5
-    pygame.draw.line(screen, BLACK, (455, 0), (455, 85))
-    pygame.draw.line(screen, BLACK, (365, 85), (455, 85))
-    # MOUSE REGION 6
-    pygame.draw.line(screen, BLACK, (545, 0), (545, 85))
-    pygame.draw.line(screen, BLACK, (455, 85), (545, 85))
-    # MOUSE REGION 7
-    pygame.draw.line(screen, BLACK, (640, 0), (640, 85))
-    pygame.draw.line(screen, BLACK, (545, 85), (640, 85))
+    screen.blit(pieces.piece2, pieces.rect2)
     pygame.display.flip()
     pygame.display.update()
