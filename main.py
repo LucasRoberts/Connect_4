@@ -27,7 +27,7 @@ piece_location = 0
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 # Initializing classes
-pieces = board.Pieces(tracker, piece_position_list)
+pieces = board.Pieces(tracker, piece_position_list, player_pieces)
 background = board.Background()
 players = player.Player()
 mouse = mouse.Mouse()
@@ -53,9 +53,12 @@ while running:
             pygame.quit()
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
+            print(f"event: {pygame.event.event_name(event.type)}")
             # Checks for the players input, this will grab where the player places their piece
-            if pieces.piece_gravity(get_position()) != -1:
-                pieces.place_piece(pieces.piece_gravity(get_position()), player_flag)
+            if pieces.piece_gravity(get_position(), player_flag) != -1:
+                pieces.place_piece(pieces.piece_gravity(get_position(), player_flag), player_flag)
+                turn_tracker += 1
+                player_flag = players.switch_players(turn_tracker)
     # This sets the background to white and then adds the connect4.png on top
     screen.fill(WHITE)
     screen.blit(background.BACKGROUND_IMG, background.background_rect)
@@ -64,3 +67,6 @@ while running:
     screen.blit(pieces.piece2, pieces.rect2)
     pygame.display.flip()
     pygame.display.update()
+
+# if __name__ == "__main__":
+#     main()

@@ -26,7 +26,7 @@ class Checker:
         :param player_piece: Dictionary containing player symbols
         :return: False if game is over, True if its not
         """
-        win_counter = 0
+        end_counter = 0
         if counter == 42:
             return False
 

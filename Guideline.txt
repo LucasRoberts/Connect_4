@@ -20,9 +20,21 @@ Plan
         Create two players
         Update & Store moves (maybe in an array)
         Create player_move class to allow placement
-        Deny the abilty for someone to place if its not their turn
+        Deny the ability for someone to place if its not their turn
         Alternate turns
     End game:
         Player gets 4 pieces in a row in any direction
         All slots are filled
         A player quits/ff
+
+
+What do I need to work on now?
+    Turns
+        I need to track where the player clicks
+        send that to the pieces class
+        and then place the piece while including gravity
+        I need to know where to place the pieces in terms of coords
+
+    Pieces
+        I have to track turn it is and choose the piece accordingly
+        use the choose_player function to decide this...

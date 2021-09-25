@@ -29,6 +29,6 @@ class Player(pygame.sprite.Sprite):
         """
         self.turn_tracker = turn_tracker
         if self.turn_tracker % 2 == 0:
-            return True, False
+            return True
         else:
-            return False, True
+            return False
