@@ -1,3 +1,8 @@
+"""
+Author: Lucas Roberts
+Description: A simple game of Connect 4 using the pygame library
+Date: 9/25/2021
+"""
 import pygame
 import board
 import checker
@@ -17,21 +22,13 @@ piece_position_list = [[(50, 41), (140, 41), (230, 41), (320, 41), (410, 41), (5
                        [(50, 281), (140, 281), (230, 281), (320, 281), (410, 281), (500, 281), (590, 281)],
                        [(50, 361), (140, 361), (230, 361), (320, 361), (410, 361), (500, 361), (590, 361)],
                        [(50, 441), (140, 441), (230, 441), (320, 441), (410, 441), (500, 441), (590, 441)]]
-print(piece_position_list)
 # player variables
 player_pieces = {True: 1, False: 2}
 player_flag = True
 running = True
 turn_tracker = 0
-piece_location = 0
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-# Initializing classes
-pieces = board.Pieces(tracker, piece_position_list, player_pieces)
-background = board.Background()
-players = player.Player()
-mouse = mouse.Mouse()
-checker = checker.Checker(board, player, player_pieces)
 # Initializes pygame
 pygame.init()
 SCREEN_SIZE = SCREEN_HEIGHT, SCREEN_WIDTH = 640, 480
@@ -39,6 +36,14 @@ clock = pygame.time.Clock()
 flags = pygame.SCALED | pygame.RESIZABLE
 screen = pygame.display.set_mode(SCREEN_SIZE, flags=flags)
 pygame.display.set_caption("Connect 4!")
+# Initializing classes
+pieces = board.Pieces(tracker, piece_position_list, player_pieces, player_flag)
+background = board.Background()
+players = player.Player()
+mouse = mouse.Mouse()
+checker = checker.Checker(board, player, player_pieces)
+# Creating a sprite group
+player_token_group = pygame.sprite.Group()
 
 
 def get_position():
@@ -53,18 +58,20 @@ while running:
             pygame.quit()
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
-            print(f"event: {pygame.event.event_name(event.type)}")
             # Checks for the players input, this will grab where the player places their piece
-            if pieces.piece_gravity(get_position(), player_flag) != -1:
-                pieces.place_piece(pieces.piece_gravity(get_position(), player_flag), player_flag)
+            if mouse.get_mouse_location() != -1 and tracker[0][mouse.get_mouse_location()] == 0:
+                pieces.place_piece(pieces.piece_gravity(get_position(), player_flag), player_flag, screen)
+                pieces = board.Pieces(tracker, piece_position_list, player_pieces, player_flag)
+                player_token_group.add(pieces)
                 turn_tracker += 1
                 player_flag = players.switch_players(turn_tracker)
+                running = checker.is_game_over(turn_tracker, player_pieces)
+                player_token_group.update()
     # This sets the background to white and then adds the connect4.png on top
     screen.fill(WHITE)
     screen.blit(background.BACKGROUND_IMG, background.background_rect)
     # Player turn
-    screen.blit(pieces.piece1, pieces.rect1)
-    screen.blit(pieces.piece2, pieces.rect2)
+    screen.blit(pieces.image, pieces.rect)
     pygame.display.flip()
     pygame.display.update()
 

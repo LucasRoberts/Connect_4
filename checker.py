@@ -26,8 +26,13 @@ class Checker:
         :param player_piece: Dictionary containing player symbols
         :return: False if game is over, True if its not
         """
-        end_counter = 0
-        if counter == 42:
+        end_counter = counter
+        if end_counter == 42:
             return False
+        else:
+            return True
+
+    def check_left(self, board, player_pieces):
+        pass
 
 

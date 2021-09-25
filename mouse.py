@@ -19,25 +19,18 @@ class Mouse:
 
     def get_mouse_location(self):
         if self.mouse.get_pos()[0] <= self.x1 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 1")
             return 0
         elif self.x1 <= self.mouse.get_pos()[0] <= self.x2 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 2")
             return 1
         elif self.x2 <= self.mouse.get_pos()[0] <= self.x3 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 3")
             return 2
         elif self.x3 <= self.mouse.get_pos()[0] <= self.x4 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 4")
             return 3
         elif self.x4 <= self.mouse.get_pos()[0] <= self.x5 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 5")
             return 4
         elif self.x5 <= self.mouse.get_pos()[0] <= self.x6 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 6")
             return 5
         elif self.x6 <= self.mouse.get_pos()[0] <= self.x7 and self.mouse.get_pos()[1] <= self.y1:
-            print("You clicked region 7")
             return 6
         else:
             return -1  # This is a sentinel
