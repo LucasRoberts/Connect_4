@@ -16,6 +16,7 @@ tracker = [[0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 0, 0]]
+# Move this into Piece class
 piece_position_list = [[(50, 41), (140, 41), (230, 41), (320, 41), (410, 41), (500, 41), (590, 41)],
                        [(50, 121), (140, 121), (230, 121), (320, 121), (410, 121), (500, 121), (590, 121)],
                        [(50, 201), (140, 201), (230, 201), (320, 201), (410, 201), (500, 201), (590, 201)],
@@ -37,7 +38,6 @@ flags = pygame.SCALED | pygame.RESIZABLE
 screen = pygame.display.set_mode(SCREEN_SIZE, flags=flags)
 pygame.display.set_caption("Connect 4!")
 # Initializing classes
-pieces = board.Pieces(tracker, piece_position_list, player_pieces, player_flag)
 background = board.Background()
 players = player.Player()
 mouse = mouse.Mouse()
@@ -60,18 +60,19 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Checks for the players input, this will grab where the player places their piece
             if mouse.get_mouse_location() != -1 and tracker[0][mouse.get_mouse_location()] == 0:
-                pieces.place_piece(pieces.piece_gravity(get_position(), player_flag), player_flag, screen)
-                pieces = board.Pieces(tracker, piece_position_list, player_pieces, player_flag)
-                player_token_group.add(pieces)
+                piece = board.Piece(tracker, piece_position_list, player_pieces, player_flag)
+                piece.place_piece(piece.piece_gravity(get_position(), player_flag))
+                player_token_group.add(piece)
                 turn_tracker += 1
                 player_flag = players.switch_players(turn_tracker)
-                running = checker.is_game_over(turn_tracker, player_pieces)
-                player_token_group.update()
+                running = checker.is_game_over(turn_tracker, tracker)
+                screen.blit(piece.image, piece.rect)
     # This sets the background to white and then adds the connect4.png on top
     screen.fill(WHITE)
     screen.blit(background.BACKGROUND_IMG, background.background_rect)
+    for entity in player_token_group:
+        screen.blit(entity.image, entity.rect)
     # Player turn
-    screen.blit(pieces.image, pieces.rect)
     pygame.display.flip()
     pygame.display.update()
 

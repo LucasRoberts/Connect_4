@@ -15,7 +15,7 @@ class Background(pygame.sprite.Sprite):
         self.background_rect.topleft = self.ORIGIN
 
 
-class Pieces(pygame.sprite.Sprite):
+class Piece(pygame.sprite.Sprite):
     """
     Class that sets up and initializes the player pieces
     """
@@ -25,7 +25,7 @@ class Pieces(pygame.sprite.Sprite):
             self.piece = "red.png"
         else:
             self.piece = "yellow.png"
-        self.piece_dimensions = self.piece_x, self.piece_y = 70, 70
+        self.piece_dimensions = self.piece_dim_x, self.piece_dim_y = 70, 70
         self.image = pygame.image.load(self.piece)
         self.image = pygame.transform.smoothscale(self.image, self.piece_dimensions)
         self.rect = self.image.get_rect()
@@ -33,20 +33,15 @@ class Pieces(pygame.sprite.Sprite):
         self.piece_coords = piece_coords
         self.player_piece_dict = player_piece_dict
 
-    def place_piece(self, location, player, screen):
+    def place_piece(self, location):
         """
         Takes player bool flag, determine which player symbol to use
-        :param player: Bool
         :param location: int
         :return: piece location for each player
         """
-        if player:
-            # location[0] is x
-            # location[1] is y
-            self.rect.center = (location[0], location[1])
-        else:
-            self.rect.center = (location[0], location[1])
-        Pieces.update(self, screen=screen, location=location)
+        # location[0] is x
+        # location[1] is y
+        self.rect.center = (location[0], location[1])
 
     def piece_gravity(self, player_piece_loc, player_turn):
         """
@@ -65,22 +60,21 @@ class Pieces(pygame.sprite.Sprite):
             # PROBLEM: This will break place_piece because it returns null
             if self.board[0][player_piece_loc] != 0:
                 print("This column is already full\nSelect another spot")
+                # returns None be careful
                 break
+            # THis statement is probably useless double check
             elif below_checker == 5:
                 location = self.piece_coords[below_checker][player_piece_loc]
-                Pieces.update_board(self, below_checker, player_piece_loc, self.player_piece_dict, player_turn)
+                Piece.update_board(self, below_checker, player_piece_loc, self.player_piece_dict, player_turn)
                 return location
             elif self.board[below_checker+1][player_piece_loc] != 0:
                 location = self.piece_coords[below_checker][player_piece_loc]
-                Pieces.update_board(self, below_checker, player_piece_loc, self.player_piece_dict, player_turn)
+                Piece.update_board(self, below_checker, player_piece_loc, self.player_piece_dict, player_turn)
                 return location
 
     def update_board(self, x, y, player_piece, player):
         self.board[x][y] = player_piece[player]
         return self.board
-
-    def update(self, screen, location):
-        pygame.screen.blit(self.image, location)
         # This is nor working and only causing errors
         # Deleting this function and fixing place_pieces should at least let the game run albeit without the pieces
         # updating. I have to figure out why the player pieces aren't being updated
