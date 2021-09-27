@@ -43,6 +43,7 @@ class Checker:
         width = 7
         height = 6
         win_counter = 0
+        horizontal_flag = False
         # The first bracket for the board is the height
         # The second bracket is the width
         for i in range(height):
@@ -53,13 +54,16 @@ class Checker:
                     # so turns.
                     if board[i][j] == board[i][j+1] and board[i][j] != 0:
                         win_counter += 1
-                        print(board)
-                        print(f"board position {board[i][j]}")
                         print(win_counter)
                         if win_counter == 4:
-                            return True
+                            print(horizontal_flag)
+                            horizontal_flag = True
                         else:
-                            return False
-                except IndexError:
-                    return False
+                            horizontal_flag = False
+                            print(horizontal_flag)
 
+                except IndexError:
+                    horizontal_flag = False
+                    print(horizontal_flag)
+        print(horizontal_flag)
+        return horizontal_flag

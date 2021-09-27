@@ -63,10 +63,10 @@ while running:
                 piece = board.Piece(tracker, piece_position_list, player_pieces, player_flag)
                 piece.place_piece(piece.piece_gravity(get_position(), player_flag))
                 player_token_group.add(piece)
+                screen.blit(piece.image, piece.rect)
+                running = checker.is_game_over(turn_tracker, tracker)
                 turn_tracker += 1
                 player_flag = players.switch_players(turn_tracker)
-                running = checker.is_game_over(turn_tracker, tracker)
-                screen.blit(piece.image, piece.rect)
     # This sets the background to white and then adds the connect4.png on top
     screen.fill(WHITE)
     screen.blit(background.BACKGROUND_IMG, background.background_rect)
