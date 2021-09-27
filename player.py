@@ -1,4 +1,5 @@
 import pygame
+import mouse
 pygame.init()
 
 
@@ -8,18 +9,9 @@ class Player(pygame.sprite.Sprite):
     """
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        pass
-
-    def pick_location(self, board, player_piece, player1, player2, player_choice):
-        """
-        Determines if the place the player is selecting is a selectable
-        location
-        :param board:
-        :param player_piece:
-        :param player1:
-        :param player2:
-        :return: the board with the players new location
-        """
+        self.player_win_counter = 0
+        self.player_flag = None
+        self.mouse = mouse.Mouse()
 
     def switch_players(self, turn_tracker):
         """
@@ -32,3 +24,8 @@ class Player(pygame.sprite.Sprite):
             return True
         else:
             return False
+
+    def get_position(self):
+        x_loc = self.mouse.get_mouse_location()
+        return x_loc
+
