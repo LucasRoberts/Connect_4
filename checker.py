@@ -34,8 +34,9 @@ class Checker:
         # False means it will exit
         horizontal = Checker.check_horizontal(self, tracker)
         vertical = Checker.check_vertical(self, tracker)
-        diagonal = Checker.check_diagonal(self, tracker)
-        if not horizontal or not vertical or not diagonal:
+        l_diagonal = Checker.check_left_diagonal(self, tracker)
+        r_diagonal = Checker.check_right_diagonal(self, tracker)
+        if not horizontal or not vertical or not l_diagonal or not r_diagonal:
             return False
         if end_counter == 42:
             return False
@@ -51,14 +52,14 @@ class Checker:
         # The second bracket is the width
         for i in range(height):
             for j in range(width):
-                try:
+                if j + 1 < width:
                     if board[i][j] == board[i][j+1] and board[i][j] != 0:
                         win_counter += 1
                         if win_counter == 3:
                             return False
                         else:
                             horizontal_flag = True
-                except IndexError:
+                else:
                     horizontal_flag = True
             win_counter = 0
         return horizontal_flag
@@ -70,7 +71,7 @@ class Checker:
         # The first bracket for the board is the height
         # The second bracket is the width
         for i in range(height):
-            try:
+            if i+1 < height:
                 if board[i][self.mouse.get_mouse_location()] == board[i + 1][self.mouse.get_mouse_location()] and\
                         board[i][self.mouse.get_mouse_location()] != 0:
                     win_counter += 1
@@ -78,11 +79,11 @@ class Checker:
                         return False
                     else:
                         vertical_flag = True
-            except IndexError:
+            else:
                 vertical_flag = True
         return vertical_flag
 
-    def check_diagonal(self, board):
+    def check_right_diagonal(self, board):
         width = 7
         height = 6
         win_counter = 0
@@ -91,10 +92,38 @@ class Checker:
         # The second bracket is the width
         for i in range(height):
             for j in range(width):
-                try:
+                if (j + 1) < width and i >= height:
+                    if (width - j - 1) > 0 and height - i - 1 > 0:
+                        while board[height - i][width - j] == board[height - i - 1][width - j - 1] and \
+                                board[height - i][width - j] != 0:
+                            win_counter += 1
+                            if win_counter == 3:
+                                return False
+                            else:
+                                diagonal_flag = True
+                            i += 1
+                            j += 1
+                    else:
+                        diagonal_flag = True
+                        i += 1
+                        j += 1
+                    win_counter = 0
+                else:
+                    diagonal_flag = True
+        return diagonal_flag
+
+    def check_left_diagonal(self, board):
+        width = 7
+        height = 6
+        win_counter = 0
+        diagonal_flag = True
+        # The first bracket for the board is the height
+        # The second bracket is the width
+        for i in range(height):
+            for j in range(width):
+                if (j + 1) < width and i+1 < height:
                     while board[i][j] == board[i + 1][j + 1] and board[i][j] != 0:
                         win_counter += 1
-                        print(win_counter)
                         if win_counter == 3:
                             return False
                         else:
@@ -102,6 +131,6 @@ class Checker:
                         i += 1
                         j += 1
                     win_counter = 0
-                except IndexError:
+                else:
                     diagonal_flag = True
         return diagonal_flag
