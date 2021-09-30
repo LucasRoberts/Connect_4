@@ -46,8 +46,6 @@ checker = checker.Checker(board, player, player_pieces)
 player_token_group = pygame.sprite.Group()
 
 
-
-
 while running:
     clock.tick(60)
     for event in pygame.event.get():
@@ -57,25 +55,26 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Checks for the players input, this will grab where the player places their piece
             if mouse.get_mouse_location() != -1 and tracker[0][mouse.get_mouse_location()] == 0:
+                # Creates a piece object using the players specified location
                 piece = board.Piece(tracker, piece_position_list, player_pieces, player_flag)
                 piece.place_piece(piece.piece_gravity(players.get_position(), player_flag))
+                # Adds it to a group of sprites
                 player_token_group.add(piece)
-                screen.blit(piece.image, piece.rect)
                 running = checker.is_game_over(turn_tracker, tracker)
                 if not running:
+                    # End game
+                    screen.blit(piece.image, piece.rect)
                     pygame.display.flip()
                     print(f"Congrats player {player_pieces[player_flag]} for winning!")
                     print(tracker)
-                    pygame.time.wait(2000)
+                    pygame.time.wait(10000)
                 turn_tracker += 1
                 player_flag = players.switch_players(turn_tracker)
     # This sets the background to white and then adds the connect4.png on top
     screen.fill(WHITE)
     screen.blit(background.BACKGROUND_IMG, background.background_rect)
+    # Checks the group of sprites to blit them to the screen
     for entity in player_token_group:
         screen.blit(entity.image, entity.rect)
     # Player turn
     pygame.display.flip()
-
-# if __name__ == "__main__":
-#     main()

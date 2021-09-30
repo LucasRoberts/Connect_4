@@ -66,5 +66,13 @@ class Piece(pygame.sprite.Sprite):
                 return location
 
     def update_board(self, x, y, player_piece, player):
+        """
+        Updates the board logic tracker
+        :param x: int
+        :param y: int
+        :param player_piece: dict
+        :param player: bool
+        :return: matrix: updated board logic
+        """
         self.board[x][y] = player_piece[player]
         return self.board
