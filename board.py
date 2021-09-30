@@ -53,16 +53,9 @@ class Piece(pygame.sprite.Sprite):
         :return: tuple -> location for the players piece
         """
         for below_checker in range(6):
-            # THIS IS WHERE I LEFT OFF
-            # For some reason the placement of pieces is happening twice
-            # The first if statement is to try and make sure you cant place
-            # pieces in an already full column
-            # PROBLEM: This will break place_piece because it returns null
             if self.board[0][player_piece_loc] != 0:
                 print("This column is already full\nSelect another spot")
-                # returns None be careful
                 break
-            # THis statement is probably useless double check
             elif below_checker == 5:
                 location = self.piece_coords[below_checker][player_piece_loc]
                 Piece.update_board(self, below_checker, player_piece_loc, self.player_piece_dict, player_turn)
@@ -75,8 +68,3 @@ class Piece(pygame.sprite.Sprite):
     def update_board(self, x, y, player_piece, player):
         self.board[x][y] = player_piece[player]
         return self.board
-        # This is nor working and only causing errors
-        # Deleting this function and fixing place_pieces should at least let the game run albeit without the pieces
-        # updating. I have to figure out why the player pieces aren't being updated
-        # The location is being changed and the tracking board is being change from 0 to 1 or 2
-        # The sprites just wont go to the location for some reason.

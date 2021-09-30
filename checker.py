@@ -84,6 +84,11 @@ class Checker:
         return vertical_flag
 
     def check_right_diagonal(self, board):
+        """
+        Checks the '/' angle to see if there are 4 in a row
+        :param board: nested list
+        :return: True if there was no 4 in a row, False if there was
+        """
         width = 7
         height = 6
         win_counter = 0
@@ -92,45 +97,37 @@ class Checker:
         # The second bracket is the width
         for i in range(height):
             for j in range(width):
-                if (j + 1) < width and i >= height:
-                    if (width - j - 1) > 0 and height - i - 1 > 0:
-                        while board[height - i][width - j] == board[height - i - 1][width - j - 1] and \
-                                board[height - i][width - j] != 0:
-                            win_counter += 1
-                            if win_counter == 3:
-                                return False
-                            else:
-                                diagonal_flag = True
-                            i += 1
-                            j += 1
-                    else:
-                        diagonal_flag = True
+                if 0 <= j - 3 < width and i + 3 < height:
+                    while board[i][j] == board[i+1][j-1] and board[i][j] != 0:
+                        win_counter += 1
+                        if win_counter == 3:
+                            return False
+                        j -= 1
                         i += 1
-                        j += 1
                     win_counter = 0
-                else:
-                    diagonal_flag = True
-        return diagonal_flag
+        return True
 
     def check_left_diagonal(self, board):
+        """
+        Checks the '\' angle for 4 in a row
+        :param board: nested list
+        :return: True if there was no 4 in a row, False if there was
+        """
         width = 7
         height = 6
         win_counter = 0
-        diagonal_flag = True
         # The first bracket for the board is the height
         # The second bracket is the width
-        for i in range(height):
-            for j in range(width):
-                if (j + 1) < width and i+1 < height:
+        for i in range(height):  # 0 - 5
+            for j in range(width):  # 0 - 6
+                # Check j and i + 3 because if its not at least 4 spaces down you can't have connect 4
+                if j + 3 < width and i + 3 < height:
                     while board[i][j] == board[i + 1][j + 1] and board[i][j] != 0:
                         win_counter += 1
                         if win_counter == 3:
                             return False
-                        else:
-                            diagonal_flag = True
-                        i += 1
                         j += 1
-                    win_counter = 0
-                else:
-                    diagonal_flag = True
-        return diagonal_flag
+                        i += 1
+                win_counter = 0
+        return True
+

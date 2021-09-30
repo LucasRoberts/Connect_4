@@ -65,7 +65,8 @@ while running:
                 if not running:
                     pygame.display.flip()
                     print(f"Congrats player {player_pieces[player_flag]} for winning!")
-                    pygame.time.wait(5000)
+                    print(tracker)
+                    pygame.time.wait(2000)
                 turn_tracker += 1
                 player_flag = players.switch_players(turn_tracker)
     # This sets the background to white and then adds the connect4.png on top

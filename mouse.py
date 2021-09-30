@@ -15,7 +15,7 @@ class Mouse:
         self.x5 = 455
         self.x6 = 545
         self.x7 = 640
-        self.y1 = 85
+        self.y1 = 480
 
     def get_mouse_location(self):
         if self.mouse.get_pos()[0] <= self.x1 and self.mouse.get_pos()[1] <= self.y1:
